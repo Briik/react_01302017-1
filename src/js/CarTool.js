@@ -6,20 +6,26 @@ import ItemTable from 'ItemTable';
 class CarForm extends React.Component {
 
   static propTypes = {
+    carHeaders: React.PropTypes.arrayOf(React.PropTypes.string),
     addCar: React.PropTypes.func.isRequired
   }
 
   constructor(props) {
     super(props)
+    const newCarObject = {};
+    this.props.carHeaders.forEach((header) => {
+      newCarObject[header] = '';
+    });
     this.state = {
-      newCar: {}
+      newCar: JSON.parse(JSON.stringify(newCarObject)),
+      resetCarObject: newCarObject
     }
   }
   addCarToState = (event) => {
     event.preventDefault();
     this.props.addCar(this.state.newCar);
     this.setState({
-      newCar: {}
+      newCar: this.state.resetCarObject
     });
   }
   newCarChange = (event) => {
@@ -35,7 +41,7 @@ class CarForm extends React.Component {
           type="test"
           id={`new-item-input-${e}`}
           name={e}
-          value={this.state.newCar[e] || ''}
+          value={this.state.newCar[e]}
           onChange={this.newCarChange} />
       </div>
     )
@@ -53,8 +59,8 @@ class CarForm extends React.Component {
 export default class CarTool extends React.Component {
 
   static propTypes = {
-    carHeaders: React.PropTypes.array,
-    carList: React.PropTypes.array
+    carHeaders: React.PropTypes.arrayOf(React.PropTypes.string),
+    carList: React.PropTypes.arrayOf(React.PropTypes.object)
   }
 
   constructor(props) {
@@ -81,7 +87,7 @@ export default class CarTool extends React.Component {
           <CarForm
             carHeaders={this.props.carHeaders}
             addCar={this.addCar}
-             />
+            />
         </div>
     );
   }
