@@ -1,14 +1,28 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import ColorTool from 'ColorTool';
+import CarTool from 'CarTool';
 
-import 'bootstrap-loader';
-import '../css/styles.scss';
+const colors = ['green', 'yellow', 'black', 'red', 'white', 'blue'];
+const carList = [
+  {Make: 'BMW', Model: '335', Year: '2008', Color: 'gray', Price: 'OBO'},
+  {Make: 'Honda', Model: 'Odessy', Year: '2005', Color: 'Red', Price: 12000},
+  {Make: 'Honda', Model: 'Fit', Year: '2012', Color: 'Silver', Price: 10000}
+];
+const carHeaders = ['Make', 'Model', 'Year', 'Color', 'Price']
 
-class HelloWorld extends React.Component {
-
-    render() {
-        return <h1>Hello World!</h1>;
-    }
+class App extends React.Component {
+  render() {
+    return (
+      <div>
+        <ColorTool myColors={colors} />
+        <CarTool
+          carList={carList}
+          carHeaders={carHeaders}
+          />
+      </div>
+    );
+  }
 }
 
-ReactDOM.render( <HelloWorld /> , document.querySelector('main'));
+ReactDOM.render(<App />, document.querySelector('main'));
