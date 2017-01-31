@@ -3,27 +3,24 @@ import ReactDOM from 'react-dom';
 import HeaderOne from 'HeaderOne';
 import ItemTable from 'ItemTable';
 
-export default class CarTool extends React.Component {
+class CarForm extends React.Component {
   constructor(props) {
-    super(props);
+    super(props)
     this.state = {
-      newCar: {},
-      userAddedCars: []
-    };
+      newCar: {}
+    }
+  }
+  addCarToState = (event) => {
+    event.preventDefault();
+    this.props.addCar(this.state.newCar);
+    this.setState({
+      newCar: {}
+    });
   }
   newCarChange = (event) => {
     const updatedCar = this.state.newCar;
     updatedCar[event.currentTarget.name] = event.currentTarget.value;
     this.setState({newCar: updatedCar});
-  }
-  addCarToState = (event) => {
-    event.preventDefault();
-    const newCar = this.state.newCar;
-    const newuserAddedCars = this.state.userAddedCars.concat([newCar]);
-    this.setState({
-      userAddedCars: newuserAddedCars,
-      newCar: {}
-    });
   }
   newCarInputs() {
     return this.props.carHeaders.map(e =>
@@ -40,6 +37,29 @@ export default class CarTool extends React.Component {
   }
   render() {
     return (
+      <form>
+        {this.newCarInputs()}
+        <button type='button' onClick={this.addCarToState}>Submit</button>
+      </form>
+    );
+  }
+}
+
+export default class CarTool extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      userAddedCars: []
+    };
+  }
+  addCar = (newCar) => {
+    const newuserAddedCars = this.state.userAddedCars.concat([newCar]);
+    this.setState({
+      userAddedCars: newuserAddedCars,
+    });
+  }
+  render() {
+    return (
         <div>
           <HeaderOne header="Car Tool" />
           <ItemTable
@@ -47,10 +67,10 @@ export default class CarTool extends React.Component {
             userAddedItems={this.state.userAddedCars}
             itemHeaders={this.props.carHeaders}
             />
-          <form>
-            {this.newCarInputs()}
-            <button type='button' onClick={this.addCarToState}>Submit</button>
-          </form>
+          <CarForm
+            carHeaders={this.props.carHeaders}
+            addCar={this.addCar}
+             />
         </div>
     );
   }
