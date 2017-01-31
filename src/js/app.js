@@ -5,11 +5,11 @@ import CarTool from './CarTool/CarTool';
 
 const colors = ['green', 'yellow', 'black', 'red', 'white', 'blue'];
 const carList = [
-  {Make: 'BMW', Model: '335', Year: '2008', Color: 'gray', Price: 'OBO'},
-  {Make: 'Honda', Model: 'Odessy', Year: '2005', Color: 'Red', Price: 12000},
-  {Make: 'Honda', Model: 'Fit', Year: '2012', Color: 'Silver', Price: 10000}
+  {ID: 1, Make: 'BMW', Model: '335', Year: '2008', Color: 'gray', Price: 'OBO'},
+  {ID2: 2, Make: 'Honda', Model: 'Odessy', Year: '2005', Color: 'Red', Price: 12000},
+  {ID: 3, Make: 'Honda', Model: 'Fit', Year: '2012', Color: 'Silver', Price: 10000}
 ];
-const carHeaders = ['Make', 'Model', 'Year', 'Color', 'Price']
+const carHeaders = ['ID', 'Make', 'Model', 'Year', 'Color', 'Price', 'Editable']
 
 class App extends React.Component {
   render() {

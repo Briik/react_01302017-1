@@ -1,7 +1,15 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import ViewRow from 'ViewRow';
 
 export default class ItemTable extends React.Component {
+
+  static propTypes = {
+    userAddedItems: React.PropTypes.array,
+    itemHeaders: React.PropTypes.array,
+    deleteItem: React.PropTypes.func
+    }
+
   tableHead() {
     return (
       <thead>
@@ -13,26 +21,17 @@ export default class ItemTable extends React.Component {
       </thead>
     );
   }
-  tableRow(item) {
-    const itemKeys = Object.keys(item);
-    return (
-      <tr key={item[itemKeys[1]]}>
-        {
-          itemKeys.map(e =>
-            <td key={`${item[e]}-td`}>
-              {item[e]}
-            </td>
-          )
-        }
-      </tr>
-    )
-  }
   tableBody() {
     const fullItemArray = this.props.itemList.concat(this.props.userAddedItems);
     return (
       <tbody>
-          {fullItemArray.map(e =>
-            this.tableRow(e)
+          {fullItemArray.map((e, i) =>
+            <ViewRow
+              key={`${i}-${e}`}
+              item={e}
+              delete={this.props.deleteItem}
+              edit={this.props.makeEditable}
+              editItem={this.props.editItem} />
           )}
       </tbody>
     );
