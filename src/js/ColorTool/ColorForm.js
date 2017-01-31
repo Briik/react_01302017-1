@@ -1,9 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import ItemList from 'ItemList';
-import HeaderOne from 'HeaderOne';
 
-class ColorForm extends React.Component {
+export default class ColorForm extends React.Component {
 
   static propTypes = {
     addColor: React.PropTypes.func.isRequired
@@ -29,7 +27,7 @@ class ColorForm extends React.Component {
   }
   render() {
     return (
-      <form>
+      <form onSubmit={e => e.preventDefault()}>
         <div>
           <label htmlFor="new-color-input">New Color</label>
           <input
@@ -41,35 +39,6 @@ class ColorForm extends React.Component {
         </div>
         <button type="button" onClick={this.addNewColor}>Add Color</button>
       </form>
-    );
-  }
-}
-
-export default class ColorTool extends React.Component {
-
-  static propTypes = {
-    myColors: React.PropTypes.array
-  }
-
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      colors: this.props.myColors.concat()
-    };
-  }
-  addColor = (newColor) => {
-    this.setState({
-      colors: this.state.colors.concat(newColor)
-    })
-  }
-  render() {
-    return (
-      <div>
-        <HeaderOne header="Color Tool" />
-        <ItemList items={this.state.colors} />
-        <ColorForm addColor={this.addColor} />
-      </div>
     );
   }
 }

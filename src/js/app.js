@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import ColorTool from 'ColorTool';
-import CarTool from 'CarTool';
+import ColorTool from './ColorTool/ColorTool';
+import CarTool from './CarTool/CarTool';
 
 const colors = ['green', 'yellow', 'black', 'red', 'white', 'blue'];
 const carList = [
