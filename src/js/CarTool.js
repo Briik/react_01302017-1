@@ -4,6 +4,11 @@ import HeaderOne from 'HeaderOne';
 import ItemTable from 'ItemTable';
 
 class CarForm extends React.Component {
+
+  static propTypes = {
+    addCar: React.PropTypes.func.isRequired
+  }
+
   constructor(props) {
     super(props)
     this.state = {
@@ -46,6 +51,12 @@ class CarForm extends React.Component {
 }
 
 export default class CarTool extends React.Component {
+
+  static propTypes = {
+    carHeaders: React.PropTypes.array,
+    carList: React.PropTypes.array
+  }
+
   constructor(props) {
     super(props);
     this.state = {
@@ -55,7 +66,7 @@ export default class CarTool extends React.Component {
   addCar = (newCar) => {
     const newuserAddedCars = this.state.userAddedCars.concat([newCar]);
     this.setState({
-      userAddedCars: newuserAddedCars,
+      userAddedCars: newuserAddedCars
     });
   }
   render() {
