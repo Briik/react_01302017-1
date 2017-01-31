@@ -49,7 +49,7 @@ export default class ViewRow extends React.Component {
         <EditableCell
           value={this.props.item[e]}
           item={this.props.item}
-          onEdit={this.props.editItem} />
+        />
       );
     } else {
       return (
@@ -74,8 +74,15 @@ export default class ViewRow extends React.Component {
     return (
       <tr key={this.props.item[itemKeys[1]]}>
         {itemKeys.map((e, i) => this.makeCell(e, i))}
-        {this.makeButton(() => {this.props.edit(this.props.item)}, 'Edit')}
-        {this.makeButton(() => {this.props.delete(this.props.item)}, 'Delete')}
+        {this.props.item.editable === true
+        ? [
+          this.makeButton(() => {this.props.editItem(this.props.item)}, 'Save'),
+          this.makeButton(() => {this.props.cancel(this.props.item)}, 'Cancel')
+        ]
+        : [
+          this.makeButton(() => {this.props.edit(this.props.item)}, 'Edit'),
+          this.makeButton(() => {this.props.delete(this.props.item)}, 'Delete')
+        ]}
       </tr>
     );
   }

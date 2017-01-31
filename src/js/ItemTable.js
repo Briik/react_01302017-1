@@ -31,7 +31,8 @@ export default class ItemTable extends React.Component {
               item={e}
               delete={this.props.deleteItem}
               edit={this.props.makeEditable}
-              editItem={this.props.editItem} />
+              editItem={this.props.editItem}
+              cancel={this.props.cancelEdit} />
           )}
       </tbody>
     );

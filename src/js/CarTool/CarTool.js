@@ -24,53 +24,50 @@ export default class CarTool extends React.Component {
       userAddedCars: newuserAddedCars
     });
   }
-  deleteCar(car, ) {
-
-  }
   deleteCarHandler = (car) => {
     if (this.state.carList.includes(car)) {
-      const indexOfCar = this.state.carList.indexOf(car);
-      if (indexOfCar > -1) {
-        const newState = this.state.carList.concat();
-        newState.splice(indexOfCar, 1);
-        this.setState({
-          carList: newState
-        });
-      }
+      let newState = this.state.carList.concat();
+      newState = newState.filter(currentCar => {
+        return (currentCar.ID !== car.ID)
+      });
+      this.setState({
+        carList: newState
+      });
     } else if (this.state.userAddedCars.includes(car)) {
-      const indexOfCar = this.state.userAddedCars.indexOf(car);
-      if (indexOfCar > -1) {
-        const newState = this.state.userAddedCars.concat();
-        newState.splice(indexOfCar, 1);
-        this.setState({
-          userAddedCars: newState
-        });
-      }
+      let newState = this.state.userAddedCars.concat();
+      newState = newState.filter(currentCar => {
+        return (currentCar.ID !== car.ID)
+      });
+      this.setState({
+        carList: newState
+      });
     }
   }
-  makeCarEditable = (car) => {
-    if (this.state.carList.includes(car)) {
-      const indexOfCar = this.state.carList.indexOf(car);
-      if (indexOfCar > -1) {
-        const newState = this.state.carList.concat();
-        newState[indexOfCar].editable = true;
-        this.setState({
-          carList: newState
-        });
-      }
-    } else if (this.state.userAddedCars.includes(car)) {
-      const indexOfCar = this.state.userAddedCars.indexOf(car);
-      if (indexOfCar > -1) {
-        const newState = this.state.userAddedCars.concat();
-        newState[indexOfCar].editable = true;
-        this.setState({
-          userAddedCars: newState
-        });
-      }
+  makeCarEditable = (car, bool = true) => {
+    let indexOfCar = this.state.carList.indexOf(car);
+    if (indexOfCar > -1) {
+      const newState = this.state.carList.concat();
+      newState[indexOfCar].editable = bool;
+      this.setState({
+        carList: newState
+      });
+    } else if (indexOfCar === -1) {
+      indexOfCar = this.state.userAddedCars.indexOf(car);
+      const newState = this.state.userAddedCars.concat();
+      newState[indexOfCar].editable = bool;
+      this.setState({
+        userAddedCars: newState
+      });
     }
   }
-  editCar = (car, data) => {
-    console.log(`You want to edit car ${car.id} with value ${data}`);
+  editCar = (car) => {
+    console.log(`You want to edit car: ${car.Make}`);
+    console.log('Doing stuff...');
+    console.log('...lies...');
+    this.cancelEdit(car);
+  }
+  cancelEdit = (car) => {
+    this.makeCarEditable(car, false);
   }
   render() {
     return (
@@ -79,6 +76,7 @@ export default class CarTool extends React.Component {
           <ItemTable
             makeEditable={this.makeCarEditable}
             editItem={this.editCar}
+            cancelEdit={this.cancelEdit}
             deleteItem={this.deleteCarHandler}
             itemList={this.state.carList}
             userAddedItems={this.state.userAddedCars}
