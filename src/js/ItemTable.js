@@ -1,17 +1,16 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
 import ViewRow from 'ViewRow';
 
 export default class ItemTable extends React.Component {
 
-  static propTypes = {
-    userAddedItems: React.PropTypes.array,
-    itemHeaders: React.PropTypes.array,
-    deleteItem: React.PropTypes.func
+    static propTypes = {
+        userAddedItems: React.PropTypes.array,
+        itemHeaders: React.PropTypes.array,
+        deleteItem: React.PropTypes.func
     }
 
-  tableHead() {
-    return (
+    tableHead() {
+        return (
       <thead>
         <tr>
           {this.props.itemHeaders.map(e =>
@@ -19,11 +18,11 @@ export default class ItemTable extends React.Component {
           )}
         </tr>
       </thead>
-    );
-  }
-  tableBody() {
-    const fullItemArray = this.props.itemList.concat(this.props.userAddedItems);
-    return (
+        );
+    }
+    tableBody() {
+        const fullItemArray = this.props.itemList.concat(this.props.userAddedItems);
+        return (
       <tbody>
           {fullItemArray.map((e, i) =>
             <ViewRow
@@ -35,14 +34,14 @@ export default class ItemTable extends React.Component {
               cancel={this.props.cancelEdit} />
           )}
       </tbody>
-    );
-  }
-  render () {
-    return(
+        );
+    }
+    render () {
+        return(
       <table>
         {this.tableHead()}
         {this.tableBody()}
       </table>
-    )
-  }
+        );
+    }
 }
