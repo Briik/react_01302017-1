@@ -1,128 +1,89 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-// import ColorTool from './ColorTool/ColorTool';
-// import CarTool from './CarTool/CarTool';
+import { createStore } from 'redux';
+import { connect } from 'react-redux';
 
-// const colors = ['green', 'yellow', 'black', 'red', 'white', 'blue'];
-// const carList = [
-//   {ID: 1, Make: 'BMW', Model: '335', Year: '2008', Color: 'gray', Price: 'OBO'},
-//   {ID: 2, Make: 'Honda', Model: 'Odessy', Year: '2005', Color: 'Red', Price: 12000},
-//   {ID: 3, Make: 'Honda', Model: 'Fit', Year: '2012', Color: 'Silver', Price: 10000}
-// ];
-// const carHeaders = ['ID', 'Make', 'Model', 'Year', 'Color', 'Price', 'Editable'];
+// List of Favorite Things to dom
 
-// class App extends React.Component {
-//     render() {
-//         return (
-//       <div>
-//         <ColorTool myColors={colors} />
-//         <CarTool
-//           carList={carList}
-//           carHeaders={carHeaders}
-//           />
-//       </div>
-//         );
-//     }
-// }
-
-// ReactDOM.render(<App />, document.querySelector('main'));
-
-const createAddAction = value => ({
-    type: 'ADD',
+const createVariableAction = value => ({
+    type: 'variable',
     value
 });
 
-const createSubtractAction = value => ({
-    type: 'SUBTRACT',
+const createAddValueAction = value => ({
+    type: 'addValue',
     value
 });
 
-const reducer = (state = 0, action) => {
-    console.log('state: ', state, 'action: ', action);
+const reducer = (state, action) => {
     if (action == null) return state;
-    switch(action.type) {
-        case 'ADD':
-            return state + action.value;
-        case 'SUBTRACT':
-            return state - action.value;
+    switch (action.type) {
+        case 'addValue':
+            return action.value();
+        case 'variable':
+            return state;
         default:
             return state;
     }
 };
 
-const createStore = reducer => {
-    let currentState;
-    const fns = [];
-
-    return {
-        getState: () => currentState,
-        dispatch: action => {
-            currentState = reducer(currentState, action);
-            fns.forEach(fn => fn());
-        },
-        subscribe: fn => fns.push(fn),
-    };
-};
-
 const store = createStore(reducer);
-
-class Calculator extends React.Component {
-
-    static propTypes = {
-        currentValue: React.PropTypes.number,
-        addFive: React.PropTypes.func,
-        subtractFive: React.PropTypes.func
-    };
-
-    render(){
-        return(<div>
-          <div>{this.props.currentValue}</div>
-          <button onClick={this.props.addFive}>Add Five</button>
-          <button onClick={this.props.subtractFive}>Subtract Five</button>
-        </div>);
-    }
-}
 
 const mapStateToProps = appState => {
     // props passed into the Component.
     return {
-        currentValue: appState
+        currentValue: appState,
+        favoriteThings: () => favoritesList.map(e => createVariableThingInState(dispatch, e))
     };
+};
+
+let favoritesList = ['Managing State', 'Drinking lukewarm coffee'];
+
+const createVariableThingInState = (dispatch, thing) => {
+    return dispatch(createVariableAction(thing));
 };
 
 const mapDispatchToProps = dispatch => {
   // props passed into the Component
     return {
-        addFive: () => dispatch(createAddAction(5)),
-        subtractFive: () => dispatch(createSubtractAction(5))
+        addThing: () => dispatch(createAddValueAction(() => {
+            favoritesList.push('a new thing!');
+        }))
     };
 };
 
-const connect = (mapStateToProps, mapDispatchToProps) => {
-    return (componentToWrap) => {
-        return class Container extends React.Component {
+class MyFavoriteThings extends React.Component {
+    static propTypes = {
+        favoriteThings: React.PropTypes.func
+    }
+    constructor(props) {
+        super(props);
+        this.state = {
+            inputText: ''
+        }
+    }
+    onClick = (event) => {
+        event.preventDefault();
+        this.props.addThing();
+    }
+    onChange = (event) => {
+        this.setState({
+            [event.currentTarget.name]: event.currentTarget.value
+        });
+    }
+    render(){
+        return(
+            <div>
+                <ul>
+                    {this.props.favoriteThings().map(e => <li key={e.value}>{e.value}</li> )}
+                </ul>
+                <input name="inputText" type="text" onChange={this.onChange} value={this.state.inputText} />
+                <button onClick={this.onClick}>Add a thing</button>
+            </div>
+        );
+    }
+}
 
-            static propTypes = {
-                store: React.PropTypes.object
-            };
+const AppContainer = connect(mapStateToProps, mapDispatchToProps)(MyFavoriteThings);
 
-            componentDidMount() {
-                this.props.store.subscribe(() => {
-                    this.forceUpdate();
-                });
-
-                this.props.store.dispatch();
-            }
-            render() {
-                const componentProps = {};
-                Object.assign(componentProps, mapStateToProps(this.props.store.getState()));
-                Object.assign(componentProps, mapDispatchToProps(this.props.store.dispatch));
-                return React.createElement(componentToWrap, componentProps);
-            }
-        };
-    };
-};
-
-const CalculatorContainer = connect(mapStateToProps, mapDispatchToProps)(Calculator);
-
-ReactDOM.render(<CalculatorContainer store={store}/>, document.querySelector('main'));
+ReactDOM.render(<AppContainer store={store} />, document.querySelector('main'));
